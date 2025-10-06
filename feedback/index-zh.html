@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>意見回饋 - Miniblox.io</title>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="script.js"></script>
+</head>
+<body>
+  <header>
+    <h1>意見回饋</h1>
+    <nav>
+      <a href="../home/index-zh.html">首頁</a>
+      <a href="../development/index-zh.html">遊戲發展</a>
+      
+      <a href="../mods/index-zh.html">模組</a>
+      <a href="../gallery/index-zh.html">圖片</a>
+      <a href="../keyfigures/index-zh.html">重要人物</a>
+      <a href="../feedback/index-zh.html" class="active">意見回饋</a>
+    </nav>
+  </header>
+
+  <main>
+    <h2>給我們你的想法！</h2>
+    <p>你可以透過 Discord 帳號留下建議或想法。</p>
+
+    <form id="feedback-form">
+      <label>Discord 帳號：</label>
+      <input type="text" id="discord" placeholder="例如：user#0000" required>
+
+      <label>主題：</label>
+      <input type="text" id="subject" placeholder="主題名稱" required>
+
+      <label>意見內容：</label>
+      <textarea id="message" rows="6" placeholder="請輸入你的意見..." required></textarea>
+
+      <button type="submit">送出</button>
+    </form>
+
+    <p id="status"></p>
+  </main>
+
+ 
+</body>
+</html>
