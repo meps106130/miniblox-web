@@ -1,0 +1,29 @@
+@import url('../index/style.css');
+
+.timeline {
+  max-width: 800px;
+  margin: 50px auto;
+  padding: 0 20px;
+}
+
+.timeline-item {
+  background-color: #2c2c2c;
+  border: 2px solid #555;
+  border-radius: 10px;
+  margin-bottom: 30px;
+  padding: 20px;
+  transition: 0.2s;
+}
+
+.timeline-item:hover {
+  transform: scale(1.02);
+  border-color: #6bbE47;
+}
+
+.timeline-item h2 {
+  color: #6bbE47;
+}
+
+.timeline-item p {
+  color: #ddd;
+}
