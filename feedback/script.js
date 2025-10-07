@@ -21,6 +21,6 @@ form.addEventListener("submit", (e) => {
 
   // 延遲 2 秒再跳轉到 Discord
   setTimeout(() => {
-    window.location.href = "https://discord.com/channels/518118893508755456/962189533821165598";
+    window.location.href = "https://discord.com/channels/1424980986009223201/1424981156687904858";
   }, 2000);
 });
