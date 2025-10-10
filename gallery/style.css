@@ -94,7 +94,6 @@ nav a.active {
 }
 
 
-/* === Player Flip Cards === */
 .card {
   width: 250px;
   height: 250px;
@@ -113,7 +112,8 @@ nav a.active {
   transform: rotateY(180deg);
 }
 
-.card-front, .card-back {
+.card-front,
+.card-back {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -141,4 +141,110 @@ nav a.active {
   border-radius: 12px;
   padding: 10px;
   box-sizing: border-box;
+  position: relative;
+  z-index: 0; /* ✅ 關鍵：讓發光層出現在背面內 */
+  overflow: hidden;
+}
+
+/* === 炫光動畫樣式 === */
+.card-back::before {
+  content: "";
+  position: absolute;
+  inset: -40%;
+  border-radius: 50%;
+  opacity: 0;
+  transform: scale(0.8);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  z-index: -1;
+  filter: blur(40px);
+}
+
+/* hover 時出現發光 */
+.card:hover .card-back::before {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* PRO → 紫色 */
+.rank-pro .card-back {
+  border-color: #a05cff;
+  background: radial-gradient(circle at center, #3c0066 30%, #1e0033 90%);
+}
+.rank-pro .card-back::before {
+  background: conic-gradient(from 0deg, #a05cff, #d3a2ff, #a05cff);
+  animation: swirl-purple 3s linear infinite;
+}
+
+/* LEGEND → 綠色 */
+.rank-legend .card-back {
+  border-color: #1eff6e;
+  background: radial-gradient(circle at center, #005522 30%, #002a11 90%);
+}
+.rank-legend .card-back::before {
+  background: conic-gradient(from 0deg, #1eff6e, #77ffaa, #1eff6e);
+  animation: swirl-green 3s linear infinite;
+}
+
+/* IMMORTAL → 橘色 */
+.rank-immortal .card-back {
+  border-color: #ff9a3c;
+  background: radial-gradient(circle at center, #7a3a00 30%, #3a1c00 90%);
+}
+.rank-immortal .card-back::before {
+  background: conic-gradient(from 0deg, #ff9a3c, #ffb566, #ff9a3c);
+  animation: swirl-orange 3s linear infinite;
+}
+
+/* BUILDER → 天空淺藍色 */
+.rank-bulider .card-back {
+  border-color: #4fc3f7;
+  background: radial-gradient(circle at center, #0d47a1 30%, #81d4fa 90%);
+}
+.rank-bulider .card-back::before {
+  background: conic-gradient(from 0deg, #4fc3f7, #81d4fa, #4fc3f7);
+  animation: swirl-aqua 3s linear infinite;
+}
+
+/* 100lvl red */
+.card.level-100 .card-back {
+  border-color: #ff0000;
+  background: radial-gradient(circle at center, #8b0000 30%, #ff4c4c 90%);
+}
+
+.card.level-100 .card-back::before {
+  background: conic-gradient(from 0deg, #ff4c4c, #ff0000, #ff4c4c);
+  animation: swirl-red 3s linear infinite;
+}
+
+
+/* 旋轉動畫 */
+@keyframes swirl-purple {
+  0% { transform: rotate(0deg) scale(1); }
+  100% { transform: rotate(360deg) scale(1); }
+}
+@keyframes swirl-green {
+  0% { transform: rotate(0deg) scale(1); }
+  100% { transform: rotate(-360deg) scale(1); }
+}
+@keyframes swirl-orange {
+  0% { transform: rotate(0deg) scale(1); }
+  100% { transform: rotate(360deg) scale(1); }
+}
+@keyframes swirl-aqua {
+  0% { transform: rotate(0deg) scale(1); }
+  100% { transform: rotate(360deg) scale(1); }
+}
+@keyframes swirl-red {
+  0% { transform: rotate(0deg) scale(1); }
+  100% { transform: rotate(360deg) scale(1); }
+}
+
+
+
+
+
+
+.gold {
+  color: gold; /* 或者使用金色的 HEX: #FFD700 */
+  font-weight: bold; /* 如果想要更閃亮可以加粗 */
 }
