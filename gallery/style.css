@@ -1,67 +1,101 @@
+/* ==== 整體設定 ==== */
 body {
-  background-color: #1a1a1a;
+  background: linear-gradient(270deg, #1a1a1a, #242424, #1a1a1a);
+  background-size: 400% 400%;
+  animation: gradientFlow 10s ease infinite;
   color: #eee;
   font-family: "Segoe UI", sans-serif;
   text-align: center;
   margin: 0;
+  overflow-x: hidden;
 }
 
+/* 流動背景動畫 */
+@keyframes gradientFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* ==== 導覽列 ==== */
 header {
-  background: #2b2b2b;
+  background: rgba(43, 43, 43, 0.9);
   padding: 20px;
+  backdrop-filter: blur(5px);
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
 }
 
 nav a {
   color: #ccc;
   margin: 0 10px;
   text-decoration: none;
+  position: relative;
+  transition: color 0.3s;
 }
 
-nav a.active {
+nav a::after {
+  content: "";
+  position: absolute;
+  left: 0; bottom: -5px;
+  width: 100%; height: 2px;
+  background: linear-gradient(90deg, #00d2ff, #3a7bd5);
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+  transform-origin: right;
+}
+nav a:hover {
   color: #fff;
-  font-weight: bold;
-  border-bottom: 2px solid #fff;
+}
+nav a:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
 }
 
+/* ==== Gallery === */
 .gallery {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 15px;
   padding: 30px;
+  max-width: 1000px;
+  margin: 0 auto;
 }
 
 .thumb {
   width: 100%;
   border-radius: 8px;
-  transition: 0.3s;
+  transition: 0.4s;
   cursor: pointer;
+  opacity: 0;
+  transform: translateY(20px);
 }
-
 .thumb:hover {
   transform: scale(1.05);
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 15px rgba(255,255,255,0.3);
 }
 
+/* Scroll淡入動畫 */
+.thumb.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ==== Lightbox ==== */
 #lightbox {
   position: fixed;
   top: 0; left: 0;
   width: 100%; height: 100%;
-  background: rgba(0, 0, 0, 0.85);
+  background: rgba(0,0,0,0.85);
   display: flex;
   justify-content: center;
   align-items: center;
 }
-
-#lightbox.hidden {
-  display: none;
-}
-
+#lightbox.hidden { display: none; }
 #lightbox-img {
   max-width: 80%;
   max-height: 80%;
   border-radius: 10px;
 }
-
 #close {
   position: absolute;
   top: 20px;
@@ -71,49 +105,39 @@ nav a.active {
   cursor: pointer;
 }
 
-.gallery {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 每排3個 */
-  gap: 20px; /* 卡片間距 */
-  justify-items: center; /* 卡片置中 */
-  padding: 30px;
-  max-width: 1000px; /* 可根據需求調整整個區域寬度 */
-  margin: 0 auto; /* 置中整個 gallery */
-}
-
-.player-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.player-name {
-  margin-top: 8px;
-  font-size: 14px;
-  color: #ccc;
-}
-
-
+/* ==== 卡片 ==== */
 .card {
   width: 250px;
   height: 250px;
   perspective: 1000px;
+  position: relative;
+  overflow: hidden;
 }
-
 .card-inner {
   width: 100%;
   height: 100%;
   position: relative;
   transform-style: preserve-3d;
-  transition: transform 0.8s ease-in-out;
+  transition: transform 0.8s ease-in-out, box-shadow 0.5s ease;
 }
-
 .card:hover .card-inner {
   transform: rotateY(180deg);
+  box-shadow: 0 0 20px rgba(255,255,255,0.2);
+}
+/* 掃光效果 */
+.card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.2), transparent 70%);
+  transform: translateX(-100%);
+  transition: transform 0.8s;
+}
+.card:hover::after {
+  transform: translateX(100%);
 }
 
-.card-front,
-.card-back {
+.card-front, .card-back {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -121,14 +145,11 @@ nav a.active {
   backface-visibility: hidden;
   overflow: hidden;
 }
-
 .card-front img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 12px;
 }
-
 .card-back {
   background: #333;
   color: #fff;
@@ -142,109 +163,15 @@ nav a.active {
   padding: 10px;
   box-sizing: border-box;
   position: relative;
-  z-index: 0; /* ✅ 關鍵：讓發光層出現在背面內 */
   overflow: hidden;
 }
 
-/* === 炫光動畫樣式 === */
-.card-back::before {
-  content: "";
-  position: absolute;
-  inset: -40%;
-  border-radius: 50%;
-  opacity: 0;
-  transform: scale(0.8);
-  transition: opacity 0.5s ease, transform 0.5s ease;
-  z-index: -1;
-  filter: blur(40px);
-}
+/* Rank 顏色保持原本設定（省略重複） */
+.rank-pro .card-back { border-color: #a05cff; background: radial-gradient(circle at center, #3c0066 30%, #1e0033 90%); }
+.rank-legend .card-back { border-color: #1eff6e; background: radial-gradient(circle at center, #005522 30%, #002a11 90%); }
+.rank-immortal .card-back { border-color: #ff9a3c; background: radial-gradient(circle at center, #7a3a00 30%, #3a1c00 90%); }
+.rank-bulider .card-back { border-color: #4fc3f7; background: radial-gradient(circle at center, #0d47a1 30%, #81d4fa 90%); }
+.card.level-100 .card-back { border-color: #ff0000; background: radial-gradient(circle at center, #8b0000 30%, #ff4c4c 90%); }
 
-/* hover 時出現發光 */
-.card:hover .card-back::before {
-  opacity: 1;
-  transform: scale(1);
-}
+.gold { color: gold; font-weight: bold; }
 
-/* PRO → 紫色 */
-.rank-pro .card-back {
-  border-color: #a05cff;
-  background: radial-gradient(circle at center, #3c0066 30%, #1e0033 90%);
-}
-.rank-pro .card-back::before {
-  background: conic-gradient(from 0deg, #a05cff, #d3a2ff, #a05cff);
-  animation: swirl-purple 3s linear infinite;
-}
-
-/* LEGEND → 綠色 */
-.rank-legend .card-back {
-  border-color: #1eff6e;
-  background: radial-gradient(circle at center, #005522 30%, #002a11 90%);
-}
-.rank-legend .card-back::before {
-  background: conic-gradient(from 0deg, #1eff6e, #77ffaa, #1eff6e);
-  animation: swirl-green 3s linear infinite;
-}
-
-/* IMMORTAL → 橘色 */
-.rank-immortal .card-back {
-  border-color: #ff9a3c;
-  background: radial-gradient(circle at center, #7a3a00 30%, #3a1c00 90%);
-}
-.rank-immortal .card-back::before {
-  background: conic-gradient(from 0deg, #ff9a3c, #ffb566, #ff9a3c);
-  animation: swirl-orange 3s linear infinite;
-}
-
-/* BUILDER → 天空淺藍色 */
-.rank-bulider .card-back {
-  border-color: #4fc3f7;
-  background: radial-gradient(circle at center, #0d47a1 30%, #81d4fa 90%);
-}
-.rank-bulider .card-back::before {
-  background: conic-gradient(from 0deg, #4fc3f7, #81d4fa, #4fc3f7);
-  animation: swirl-aqua 3s linear infinite;
-}
-
-/* 100lvl red */
-.card.level-100 .card-back {
-  border-color: #ff0000;
-  background: radial-gradient(circle at center, #8b0000 30%, #ff4c4c 90%);
-}
-
-.card.level-100 .card-back::before {
-  background: conic-gradient(from 0deg, #ff4c4c, #ff0000, #ff4c4c);
-  animation: swirl-red 3s linear infinite;
-}
-
-
-/* 旋轉動畫 */
-@keyframes swirl-purple {
-  0% { transform: rotate(0deg) scale(1); }
-  100% { transform: rotate(360deg) scale(1); }
-}
-@keyframes swirl-green {
-  0% { transform: rotate(0deg) scale(1); }
-  100% { transform: rotate(-360deg) scale(1); }
-}
-@keyframes swirl-orange {
-  0% { transform: rotate(0deg) scale(1); }
-  100% { transform: rotate(360deg) scale(1); }
-}
-@keyframes swirl-aqua {
-  0% { transform: rotate(0deg) scale(1); }
-  100% { transform: rotate(360deg) scale(1); }
-}
-@keyframes swirl-red {
-  0% { transform: rotate(0deg) scale(1); }
-  100% { transform: rotate(360deg) scale(1); }
-}
-
-
-
-
-
-
-.gold {
-  color: gold; /* 或者使用金色的 HEX: #FFD700 */
-  font-weight: bold; /* 如果想要更閃亮可以加粗 */
-}
