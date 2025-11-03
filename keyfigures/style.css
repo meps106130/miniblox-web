@@ -102,3 +102,8 @@ footer {
     grid-template-columns: 1fr;
   }
 }
+
+.single-card {
+  grid-column: 1 / -1; /* 讓它佔滿整行 */
+  justify-self: center; /* 水平置中 */
+}
